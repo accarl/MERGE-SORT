@@ -2,6 +2,7 @@
 #include<cstdlib>
 #include<time.h>
 #include<conio.h>
+#include<iomanip>
 using namespace std;
 
 void PrintData(int data[], int length){
@@ -200,15 +201,30 @@ int main()
 	
 	OneHundredData(Data100);
 	FiveHundredData(Data500);
-	//GenerateData(Data1000);
+	
+    	double MergeCompare100 = Data100[1];
+	double SortCompare100 = Data100[3];
+	double MergeCompare500 = Data500[1];
+	double SortCompare500 = Data500[3];
+	
+    	double MergeRatio100 = Data100[2];
+	double SortRatio100 = Data100[4];
+	double MergeRatio500 = Data500[2];
+	double SortRatio500 = Data500[4];
+	
+	double CompareRatio100 = MergeCompare100/SortCompare100;
+	double CompareRatio500 = MergeCompare500/SortCompare500;
+	double MovesRatio100 = MergeRatio100/SortRatio100;
+	double MovesRatio500 = MergeRatio500/SortRatio500;
+	cout<<setprecision(1)<<fixed;
 	cout<<endl<<endl;
-	cout<<"NUMBER\t\tMERGE SORT\tQUICK SORT"<<endl<<endl;
+	cout<<"NUMBER\t\tMERGE SORT\tQUICK SORT\tRATIO"<<endl<<endl;
 	cout<<"COMPARE\t\t"<<endl;
-	cout<<"100\t\t"<<Data100[1]<<"\t\t"<<Data100[3]<<endl;
-	cout<<"500\t\t"<<Data500[1]<<"\t\t"<<Data500[3]<<endl;
+	cout<<"100\t\t"<<Data100[1]<<"\t\t"<<Data100[3]<<"\t\t"<<CompareRatio100<<endl;
+	cout<<"500\t\t"<<Data500[1]<<"\t\t"<<Data500[3]<<"\t\t"<<CompareRatio500<<endl;
 	cout<<endl<<"MOVES\t\t"<<endl;
-    cout<<"100\t\t"<<Data100[2]<<"\t\t"<<Data100[4]<<endl;
-    cout<<"500\t\t"<<Data500[2]<<"\t\t"<<Data500[4]<<endl;
+    cout<<"100\t\t"<<Data100[2]<<"\t\t"<<Data100[4]<<"\t\t"<<MovesRatio100<<endl;
+    cout<<"500\t\t"<<Data500[2]<<"\t\t"<<Data500[4]<<"\t\t"<<MovesRatio500<<endl;
 
 	getch();
     return 0;
