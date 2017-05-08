@@ -4,6 +4,22 @@
 #include<conio.h>
 using namespace std;
 
+void PrintData(int data[], int length){
+	cout<<endl<<endl;
+	for(int i = 0; i < length; i++){
+		
+		if(i%10 == 0){
+			cout<<endl;
+		}
+		else{ 
+			cout<<"\t";
+		}
+		
+		cout<<data[i];
+	}
+	cout<<endl<<endl;
+}
+
 void CopyArray(int array1[], int array2[], int length){
 	for(int i=0; i < length; i++){
 		array2[i] = array1[i];	
@@ -61,47 +77,61 @@ void MergeSort(int theArray[], int length, int first, int last, int* divideCount
 		Merge(theArray, length, first, mid, last, compareCount, movesCount);
 	} // end if
 }
-int Partition(int T[], int length, int first, int last)
+
+int Partition(int T[], int first, int last, int* compareCount, int* movesCount)
 {
      int pivot, temp;
      int loop, cutPoint, bottom, top;
-     //cutPoint = 0;
      pivot = T[first];
      bottom = first;
      top = last;
      loop = 1;
      while (loop){
-           while (T[top]>pivot)
-           { top--;}
-           //cout<<"top"<<T[top]<<endl;
-           while (T[bottom]<pivot)
-           { bottom++;}
-           //cout<<"bottom"<<T[bottom]<<endl;
-     if (bottom < top){
-           temp = T[bottom];
-           T[bottom]=T[top];
-           T[top]=temp;
-           }
-     else {
-          loop=0;
-          cutPoint=top;
-          
-          }
+		while (T[top]>pivot)
+		{
+            *compareCount+=1;
+		   	top--;
+		}
+         //  cout<<"top"<<T[top]<<endl;
+        while (T[bottom]<pivot)
+        { 
+			*compareCount+=1;
+		   	bottom++;
+		}
+        //   cout<<"bottom"<<T[bottom]<<endl;
+	     if (bottom < top)
+		 {
+				
+           if(T[top] == pivot && T[bottom]== pivot){
+				*compareCount+=1;
+				top--;
+			}
+	           temp = T[bottom];
+	           T[bottom]=T[top];
+	           T[top]=temp;
+	           *movesCount+=1;
+	    }
+	     else {
+	          loop=0;
+	          cutPoint=top;
+	    }
      }
      //cout<<"cutpoint"<<cutPoint<<endl;
      return cutPoint;
 } //end partition()
 
-void QuickSort (int T[], int length, int first, int last)
+void QuickSort (int T[], int first, int last, int* compareCount, int* movesCount)
 {
      int cut;
      if (first < last){
           //cout<<"check0"<<endl;
-          cut = Partition(T,length,first,last);
+          cut = Partition(T,first,last, compareCount, movesCount);
+          //PrintData(T, 12);
+         // getch();
           //cout<<"check1"<<endl;
-          QuickSort(T, length, first, cut);
+          QuickSort(T, first, cut, compareCount, movesCount);
           //cout<<"check2"<<endl;
-          QuickSort(T, length, cut+1, last);
+          QuickSort(T, cut+1, last, compareCount, movesCount);
           //cout<<"check3"<<endl;
           
      }
@@ -114,24 +144,10 @@ void GenerateRandomNumbers(int numbers[], int length){
 	}
 }
 
-void PrintData(int data[], int length){
-	for(int i = 0; i < length; i++){
-		
-		if(i%10 == 0){
-			cout<<endl;
-		}
-		else{
-			cout<<"\t";
-		}
-		
-		cout<<data[i];
-	}
-}
-
-void OneHundredData(){
-	int length = 11;
-	//int data[length];
-	int data[] = {749, 437, 730, 935, 987, 826, 121, 414, 979, 238, 5};
+void OneHundredData(int counts[]){
+	int length = 100;
+	int data[length];
+	//int data[] = {749, 437, 730, 935, 987, 826, 121, 414, 979, 238, 5, 5};
 	int tempdata[length];
 	int divCount, comCount, movCount;
 	divCount = 0;
@@ -140,21 +156,22 @@ void OneHundredData(){
 	//cutPoint = 0;
 	
 	cout<<"Generating Random Numbers....."<<endl;
-	//GenerateRandomNumbers(data, length);
+	GenerateRandomNumbers(data, length);
 	CopyArray(data, tempdata, length);
 	PrintData(data, length);	
-	cout<<endl<<"Sorting...Merge"<<endl<<endl;
-	MergeSort(data, length, 0, length - 1, &divCount, &comCount, &movCount);
+	cout<<endl<<"Sorting...Merge";
+	MergeSort(data, length, 0, length - 1, &counts[0], &counts[1],&counts[2]);
 	PrintData(data, length);
 	
-	cout<<endl<<endl<<"Division count: "<<divCount<<endl;
-	cout<<"Compare count: "<<comCount<<endl;
-	cout<<"Moves count: "<<movCount<<endl;
+	//cout<<endl<<endl<<"Division count: "<<divCount<<endl;
+	//cout<<"Compare count: "<<comCount<<endl;
+	//cout<<"Moves count: "<<movCount<<endl;
 	
 	//CopyArray(data, tempdata, length);
+	cout<<"Original Data";
 	PrintData(tempdata, length);
 	cout<<endl<<"Sorting...Quick"<<endl<<endl;
-    QuickSort(tempdata, length, 0, length - 1);
+    QuickSort(tempdata, 0, length - 1, &counts[3], &counts[4]);
 	PrintData(tempdata, length);
 }
 
@@ -168,7 +185,19 @@ void OneThousandData(){
 
 int main()
 {
-	OneHundredData();
+//	int nums[50];
+//	GenerateRandomNumbers(nums, 50);
+//	PrintData(nums, 100);
+	int Data100[]={0,0,0,0,0};
+	int Data500[]={0,0,0,0,0};
+	int Data1000[]={0,0,0,0,0};
+	
+	OneHundredData(Data100);
+	cout<<endl<<endl;
+	cout<<"\t\tMerge Sort\tQuick Sort"<<endl;
+	cout<<"Compare\t\t"<<Data100[1]<<"\t\t"<<Data100[3]<<endl;
+	cout<<"Moves\t\t"<<Data100[2]<<"\t\t"<<Data100[4]<<endl;
+
 	getch();
     return 0;
 }
