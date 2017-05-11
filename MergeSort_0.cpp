@@ -138,10 +138,8 @@ void QuickSort (int T[], int first, int last, int* compareCount, int* movesCount
      }
 }
 
-
-
 void GenerateRandomNumbers(int numbers[], int length){
-    	srand(time(NULL));
+    srand(time(NULL));
 	for(int i = 0; i< length; i++){
 		numbers[i] = (rand() % 1000) + 1;
 	}
@@ -163,8 +161,8 @@ void SortData(int counts[], int data[], int length)
     }
     SwapArray(data, S_data, length);
     CopyArray(S_data, S_tempdata, length);
-    cout<<"Swapped_data"<<endl;
-    PrintData(S_data, length);
+    //cout<<"Swapped_data"<<endl;
+    //PrintData(S_data, length);
     MergeSort(S_data, length, 0, length - 1, &counts[5], &counts[6],&counts[7]);
     QuickSort(S_tempdata, 0, length - 1, &counts[8], &counts[9]);
 }
@@ -178,6 +176,12 @@ void PrintCounts(int counts[], int length, int x, int y)
     x=0;
     y=0;
 }
+
+void PrintResult(int Data100[], int Data500[], int Data1000[], int x, int y){
+    PrintCounts(Data100, 100, x, y);
+	PrintCounts(Data500, 500, x, y);
+	PrintCounts(Data1000, 1000, x, y);
+}
 int main()
 {
     int data[1000], tempdata500[500], tempdata100[100]; 
@@ -188,28 +192,20 @@ int main()
 	CopyArray(data, tempdata500, 500);
 	CopyArray(data, tempdata100, 100);
 	cout<<"Generated random numbers"<<endl;
-    	PrintData(tempdata100, 100);
+    PrintData(tempdata100, 100);
 	SortData(Data1000, data, 1000);
-    	SortData(Data500, tempdata500, 500);
-    	SortData(Data100, tempdata100, 100);
-    	cout<<setprecision(1)<<fixed;
+    SortData(Data500, tempdata500, 500);
+    SortData(Data100, tempdata100, 100);
+    cout<<setprecision(1)<<fixed;
 	cout<<"NUMBER\t\tMERGE SORT\tQUICK SORT\tRATIO"<<endl;
-	cout<<endl<<endl<<"-----------compare counts using random data-----------"<<endl;
-    	PrintCounts(Data100, 100, 1, 3);
-	PrintCounts(Data500, 500, 1, 3);
-	PrintCounts(Data1000, 1000, 1, 3);
-	cout<<endl<<endl<<"-------------move counts using random data------------"<<endl;
-    	PrintCounts(Data100, 100, 2, 4);
-	PrintCounts(Data500, 500, 2, 4);
-	PrintCounts(Data1000, 1000, 2, 4);
-	cout<<endl<<endl<<"-----------compare counts using sorted data-----------"<<endl;
-    	PrintCounts(Data100, 100, 6, 8);
-	PrintCounts(Data500, 500, 6, 8);
-	PrintCounts(Data1000, 1000, 6, 8);
-	cout<<endl<<endl<<"-------------move counts using sorted data------------"<<endl;
-    	PrintCounts(Data100, 100, 7, 9);
-	PrintCounts(Data500, 500, 7, 9);
-	PrintCounts(Data1000, 1000, 7, 9);
+	cout<<endl<<"-----------compare counts using random data-----------"<<endl;
+    PrintResult(Data100, Data500, Data1000, 1,3);
+	cout<<endl<<"-------------move counts using random data------------"<<endl;
+    PrintResult(Data100, Data500, Data1000, 2,4);
+	cout<<endl<<"-----------compare counts using sorted data-----------"<<endl;
+    PrintResult(Data100, Data500, Data1000, 6,8);
+	cout<<endl<<"-------------move counts using sorted data------------"<<endl;
+    PrintResult(Data100, Data500, Data1000, 7,9);
 	getch();
     return 0;
 }
