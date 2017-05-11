@@ -5,10 +5,10 @@
 #include<iomanip>
 using namespace std;
 
+
 void PrintData(int data[], int length){
 	cout<<endl<<endl;
 	for(int i = 0; i < length; i++){
-		
 		if(i%10 == 0){
 			cout<<endl;
 		}
@@ -21,12 +21,19 @@ void PrintData(int data[], int length){
 	cout<<endl<<endl;
 }
 
-void CopyArray(int array1[], int array2[], int length){
+void CopyArray(int array1[], int array2[],  int length){
 	for(int i=0; i < length; i++){
-		array2[i] = array1[i];	
+		array2[i] = array1[i];
 	}	
 }
 
+//ALMOST SORTED DATA: (NOT YET USED BUT TESTED WORKING)
+void SwapArray(int array1[], int array2[], int length){
+     CopyArray(array1, array2,length);
+     array2[8] = array1[9];
+     array2[9] = array1[8];
+     }
+     
 void Merge(int theArray[], int length, int first, int mid, int last, int* compareCount, int* movesCount){
 	int tempArray[length]; // temp array
 	int first1 = first; // subarray begin
@@ -100,12 +107,12 @@ int Partition(int T[], int first, int last, int* compareCount, int* movesCount)
 		   	bottom++;
 		}
         //   cout<<"bottom"<<T[bottom]<<endl;
-	     if (bottom < top)
-		 {
-				
-           if(T[top] == pivot && T[bottom]== pivot){
+	    if (bottom < top)
+		 {	
+            if(T[top] == pivot && T[bottom]== pivot){
 				*compareCount+=1;
 				top--;
+				continue;
 			}
 	           temp = T[bottom];
 	           T[bottom]=T[top];
@@ -125,107 +132,83 @@ void QuickSort (int T[], int first, int last, int* compareCount, int* movesCount
 {
      int cut;
      if (first < last){
-          //cout<<"check0"<<endl;
           cut = Partition(T,first,last, compareCount, movesCount);
-          //PrintData(T, 12);
-         // getch();
-          //cout<<"check1"<<endl;
           QuickSort(T, first, cut, compareCount, movesCount);
-          //cout<<"check2"<<endl;
           QuickSort(T, cut+1, last, compareCount, movesCount);
-          //cout<<"check3"<<endl;
-          
      }
 }
 
+
+
 void GenerateRandomNumbers(int numbers[], int length){
-	srand(time(NULL));
+    srand(time(NULL));
 	for(int i = 0; i< length; i++){
-		numbers[i] = (rand() % 10000) + 1;
+		numbers[i] = (rand() % 1000) + 1;
 	}
 }
 
-void OneHundredData(int counts[]){
-	int length = 100;
-	int data[length];
-	int tempdata[length];
-	int divCount, comCount, movCount;
-	divCount = 0;
-	comCount = 0;
-	movCount = 0;
-	
-	cout<<"Generating Random Numbers.....";
-	GenerateRandomNumbers(data, length);
+void SortData(int counts[], int data[], int length)
+{
+	int tempdata[length], S_data[length], S_tempdata[length], tempdata500[length], tempdata100[length];
 	CopyArray(data, tempdata, length);
-	PrintData(data, length);	
-	cout<<endl<<"Sorting...Merge";
 	MergeSort(data, length, 0, length - 1, &counts[0], &counts[1],&counts[2]);
-	PrintData(data, length);
-	//cout<<"Original Data";
-	//PrintData(tempdata, length);
-	cout<<endl<<"Sorting...Quick";
-    QuickSort(tempdata, 0, length - 1, &counts[3], &counts[4]);
-	PrintData(tempdata, length);
+    	if (length == 10){
+        	cout<<"Sorting...Merge"<<endl;
+        	PrintData(data, length);
+    	}
+    	QuickSort(tempdata, 0, length - 1, &counts[3], &counts[4]);
+    	if (length == 10){
+         	cout<<"Sorting...Quick"<<endl;
+         	PrintData(tempdata, length);
+    	}
+    	SwapArray(data, S_data, length);
+    	CopyArray(S_data, S_tempdata, length);
+    	cout<<"Swapped_data"<<endl;
+    	PrintData(S_data, length);
+    	MergeSort(S_data, length, 0, length - 1, &counts[5], &counts[6],&counts[7]);
+    	QuickSort(S_tempdata, 0, length - 1, &counts[8], &counts[9]);
+    	cout<<"M_Com: "<<counts[1]<<"\tM_Mov: "<<counts[2]<<"\tSM_Com: "<<counts[6]<<"\tSM_Mov: "<<counts[7]<<endl;
+    	cout<<"Q_Com: "<<counts[3]<<"\tQ_Mov: "<<counts[4]<<"\tSQ_Com: "<<counts[8]<<"\tSQ_Mov: "<<counts[9]<<endl;
+    	//int finalcounts[10];
+    	//finalcounts[0,1,2,3,4,5,6,7,8,9]= counts[0,1,2,3,4,5,6,7,8,9];
 }
-
-void FiveHundredData(int counts[]){
-	int length = 500;
-	int data[length];
-	int tempdata[length];
-	int divCount, comCount, movCount;
-	divCount = 0;
-	comCount = 0;
-	movCount = 0;
-	
-	//cout<<"Generating Random Numbers....."<<endl;
-	GenerateRandomNumbers(data, length);
-	CopyArray(data, tempdata, length);
-	//PrintData(data, length);	
-	//cout<<endl<<"Sorting...Merge";
-	MergeSort(data, length, 0, length - 1, &counts[0], &counts[1],&counts[2]);
-	//PrintData(data, length);
-	//cout<<"Original Data";
-	//PrintData(tempdata, length);
-	//cout<<endl<<"Sorting...Quick"<<endl<<endl;
-    QuickSort(tempdata, 0, length - 1, &counts[3], &counts[4]);
-	//PrintData(tempdata, length);	
-
-}
-
 int main()
 {
-
-	int Data100[]={0,0,0,0,0};
-	int Data500[]={0,0,0,0,0};
-	int Data1000[]={0,0,0,0,0};
+    int data[100], tempdata500[50], tempdata100[10]; 
+    int Data100[]={0,0,0,0,0,0,0,0,0,0};
+	int Data500[]={0,0,0,0,0,0,0,0,0,0};
+	int Data1000[]={0,0,0,0,0,0,0,0,0,0};
+	GenerateRandomNumbers(data, 100);
+	CopyArray(data, tempdata500, 50);
+	CopyArray(data, tempdata100, 10);
+	cout<<"Generated random numbers"<<endl;
+    	PrintData(tempdata100, 10);
+	cout<<"1000"<<endl;
+	SortData(Data1000, data, 100);
+	cout<<"500"<<endl;
+    	SortData(Data500, tempdata500, 50);
+	cout<<"100"<<endl;
+    	SortData(Data100, tempdata100, 10);
 	
-	OneHundredData(Data100);
-	FiveHundredData(Data500);
-	
+    	
     	double MergeCompare100 = Data100[1];
-	double SortCompare100 = Data100[3];
-	double MergeCompare500 = Data500[1];
-	double SortCompare500 = Data500[3];
+	double QuickCompare100 = Data100[3];
+		
+    	double MergeMove100 = Data100[2];
+	double QuickMove100 = Data100[4];
 	
-    	double MergeRatio100 = Data100[2];
-	double SortRatio100 = Data100[4];
-	double MergeRatio500 = Data500[2];
-	double SortRatio500 = Data500[4];
+	double CompareRatio100 = MergeCompare100/QuickCompare100;
+	double MovesRatio100 = MergeMove100/QuickMove100;
 	
-	double CompareRatio100 = MergeCompare100/SortCompare100;
-	double CompareRatio500 = MergeCompare500/SortCompare500;
-	double MovesRatio100 = MergeRatio100/SortRatio100;
-	double MovesRatio500 = MergeRatio500/SortRatio500;
-	cout<<setprecision(1)<<fixed;
+    	cout<<setprecision(1)<<fixed;
 	cout<<endl<<endl;
 	cout<<"NUMBER\t\tMERGE SORT\tQUICK SORT\tRATIO"<<endl<<endl;
 	cout<<"COMPARE\t\t"<<endl;
 	cout<<"100\t\t"<<Data100[1]<<"\t\t"<<Data100[3]<<"\t\t"<<CompareRatio100<<endl;
-	cout<<"500\t\t"<<Data500[1]<<"\t\t"<<Data500[3]<<"\t\t"<<CompareRatio500<<endl;
 	cout<<endl<<"MOVES\t\t"<<endl;
-    cout<<"100\t\t"<<Data100[2]<<"\t\t"<<Data100[4]<<"\t\t"<<MovesRatio100<<endl;
-    cout<<"500\t\t"<<Data500[2]<<"\t\t"<<Data500[4]<<"\t\t"<<MovesRatio500<<endl;
+    	cout<<"100\t\t"<<Data100[2]<<"\t\t"<<Data100[4]<<"\t\t"<<MovesRatio100<<endl;
 
 	getch();
     return 0;
 }
+
