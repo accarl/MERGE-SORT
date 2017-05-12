@@ -22,6 +22,8 @@ void PrintData(int data[], int length){
 	cout<<endl<<endl<<endl;
 }
 
+
+
 void CopyArray(int array1[], int array2[],  int length){
 	for(int i=0; i < length; i++){
 		array2[i] = array1[i];
@@ -177,7 +179,9 @@ void SortData(int counts[], int data[], int length)
          cout<<"Sorting...Quick"<<endl;
          
     auto diff = t4 - t3;// difference in time
+    auto x = t4 - t3;
     cout<<"Elapsed Time: " <<chrono::duration <double, milli> (diff).count() << " ms" << endl;
+
 
          PrintData(tempdata, length);
     }
