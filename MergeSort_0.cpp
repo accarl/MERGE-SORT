@@ -3,6 +3,7 @@
 #include<time.h>
 #include<conio.h>
 #include<iomanip> //precision
+#include<chrono>// for elapsed time
 using namespace std;
 
 
@@ -149,14 +150,35 @@ void SortData(int counts[], int data[], int length)
 {
 	int tempdata[length], S_data[length], S_tempdata[length], tempdata500[length], tempdata100[length];
 	CopyArray(data, tempdata, length);
+	
+	auto t1 = chrono::steady_clock::now();//clock t1 starts now
+	
 	MergeSort(data, length, 0, length - 1, &counts[0], &counts[1],&counts[2]);
     if (length == 100){
+    	
+    auto t2 = chrono::steady_clock::now();//clock t1 ends
+    
+  
          cout<<"Sorting...Merge"<<endl;
+         
+    auto diff = t2 - t1;// difference in time
+    cout<<"Elapsed Time: " <<chrono::duration <double, milli> (diff).count() << " ms" << endl;
+
+    
          PrintData(data, length);
     }
+    
+    auto t3 = chrono::steady_clock::now();//clock t3 starts now
+    
     QuickSort(tempdata, 0, length - 1, &counts[3], &counts[4]);
     if (length == 100){
+    	
+    auto t4 = chrono::steady_clock::now();//clock t1 starts now
          cout<<"Sorting...Quick"<<endl;
+         
+    auto diff = t4 - t3;// difference in time
+    cout<<"Elapsed Time: " <<chrono::duration <double, milli> (diff).count() << " ms" << endl;
+
          PrintData(tempdata, length);
     }
     SwapArray(data, S_data, length);
